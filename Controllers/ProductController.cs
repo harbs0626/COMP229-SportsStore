@@ -19,10 +19,11 @@ namespace SportsStore.Controllers
         }
 
         //Lambda syntax "=>"
-        public ViewResult List(int productPage = 1) =>
+        public ViewResult List(string category, int productPage = 1) =>
             View(new ProductsListViewModel
             {
                 Products = repository.Products
+                    .Where(c => category == null || c.Category == category)
                     .OrderBy(p => p.ProductID)
                     .Skip((productPage - 1) * this.pageSize)
                     .Take(this.pageSize),
@@ -30,8 +31,10 @@ namespace SportsStore.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = this.pageSize,
-                    TotalItems = repository.Products.Count()
-                }
+                    TotalItems = repository.Products
+                        .Where(c => category == null || c.Category == category).Count()
+                },
+                CurrentCategory = category
             });
     }
 }
