@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using SportsStore.Models;
 
 namespace SportsStore.Components
@@ -13,12 +12,12 @@ namespace SportsStore.Components
         private IProductRepository repository;
         public NavigationMenuViewComponent(IProductRepository repo)
         {
-            this.repository = repo;
+            repository = repo;
         }
         public IViewComponentResult Invoke()
         {
             ViewBag.SelectedCategory = RouteData?.Values["category"];
-            return View(this.repository.Products
+            return View(repository.Products
                 .Select(x => x.Category)
                 .Distinct()
                 .OrderBy(x => x));
