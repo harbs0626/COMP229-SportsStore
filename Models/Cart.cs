@@ -9,7 +9,7 @@ namespace SportsStore.Models
     {
         private List<CartLine> lineCollection = new List<CartLine>();
 
-        public void AddItem(Product product, int quantity)
+        public virtual void AddItem(Product product, int quantity)
         {
             CartLine line = lineCollection
                 .Where(p => p.Product.ProductID == product.ProductID)
@@ -29,14 +29,14 @@ namespace SportsStore.Models
             }
         }
 
-        public void RemoveLine(Product product) =>
+        public virtual void RemoveLine(Product product) =>
             lineCollection.RemoveAll(l => l.Product.ProductID == product.ProductID);
+
+        public virtual void Clear() => lineCollection.Clear();
 
         public decimal ComputeTotalValue() =>
             lineCollection.Sum(e => e.Product.Price * e.Quantity);
-
-        public void Clear() => lineCollection.Clear();
-
+               
         public IEnumerable<CartLine> Lines => lineCollection;
     }
 }
