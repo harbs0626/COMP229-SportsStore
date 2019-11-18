@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportsStore.Migrations
 {
-    public partial class Orders : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,6 +13,7 @@ namespace SportsStore.Migrations
                 {
                     OrderID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Shipped = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Line1 = table.Column<string>(nullable: false),
                     Line2 = table.Column<string>(nullable: true),
@@ -29,10 +30,26 @@ namespace SportsStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(nullable: false),
+                    Category = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CartLine",
                 columns: table => new
                 {
-                    CardLineID = table.Column<int>(nullable: false)
+                    CartLineID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProductID = table.Column<int>(nullable: true),
                     Quantity = table.Column<int>(nullable: false),
@@ -40,7 +57,7 @@ namespace SportsStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartLine", x => x.CardLineID);
+                    table.PrimaryKey("PK_CartLine", x => x.CartLineID);
                     table.ForeignKey(
                         name: "FK_CartLine_Orders_OrderID",
                         column: x => x.OrderID,
@@ -73,6 +90,9 @@ namespace SportsStore.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Products");
         }
     }
 }

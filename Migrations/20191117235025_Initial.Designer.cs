@@ -10,8 +10,8 @@ using SportsStore.Models;
 namespace SportsStore.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20191117014511_Orders")]
-    partial class Orders
+    [Migration("20191117235025_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace SportsStore.Migrations
 
             modelBuilder.Entity("SportsStore.Models.CartLine", b =>
                 {
-                    b.Property<int>("CardLineID")
+                    b.Property<int>("CartLineID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -33,7 +33,7 @@ namespace SportsStore.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.HasKey("CardLineID");
+                    b.HasKey("CartLineID");
 
                     b.HasIndex("OrderID");
 
@@ -65,6 +65,8 @@ namespace SportsStore.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired();
+
+                    b.Property<bool>("Shipped");
 
                     b.Property<string>("State")
                         .IsRequired();
@@ -98,7 +100,7 @@ namespace SportsStore.Migrations
             modelBuilder.Entity("SportsStore.Models.CartLine", b =>
                 {
                     b.HasOne("SportsStore.Models.Order")
-                        .WithMany("LInes")
+                        .WithMany("Lines")
                         .HasForeignKey("OrderID");
 
                     b.HasOne("SportsStore.Models.Product", "Product")
