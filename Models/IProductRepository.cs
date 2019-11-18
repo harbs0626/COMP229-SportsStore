@@ -9,5 +9,9 @@ namespace SportsStore.Models
     {
         // IQueryable is more optimize when querying Products
         IQueryable<Product> Products { get; }
+        void SaveProduct(Product product);
+
+        Product DeleteProduct(int productId);
+        
     }
 }

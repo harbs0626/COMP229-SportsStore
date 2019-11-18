@@ -8,7 +8,7 @@ namespace SportsStore.Models
     /// <summary>
     /// Dependency injection
     /// </summary>
-    public class FakeProductRepository : IProductRepository
+    public class FakeProductRepository /*: IProductRepository*/
     {
         public IQueryable<Product> Products => new List<Product>
         {
