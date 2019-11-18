@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SportsStore.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace SportsStore
 {
@@ -43,6 +44,16 @@ namespace SportsStore
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<IOrderRepository, EFOrderRepository>();
+
+            //Registering services for Identity
+            services.AddDbContext<AppIdentityDbContext>(
+                options => options.UseSqlServer(
+                    Configuration["Data:SportsStoreIdentity:ConnectionString"]
+                )
+            );
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +67,7 @@ namespace SportsStore
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseSession();
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -86,7 +98,7 @@ namespace SportsStore
             });
 
             SeedData.EnsurePopulated(app);
-
+            IdentitySeedData.EnsurePopulated(app);
         }
     }
 }
