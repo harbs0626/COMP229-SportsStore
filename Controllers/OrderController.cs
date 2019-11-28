@@ -19,12 +19,12 @@ namespace SportsStore.Controllers
             this.cart = cartService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin,Manager")]
         public ViewResult List() => 
             View(this.repository.Orders.Where(o => !o.Shipped));
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult MarkShipped(int orderID)
         {
             Order order = this.repository.Orders
